@@ -96,24 +96,39 @@
 
 // export default AudioRecorder;
 
+"use client";
 
-import uploadAudio from '@/actions/upload-audio';
-import React, { useState, useRef } from 'react';
+import { updateAgent } from "@/actions/update-agent";
+import uploadAudio from "@/actions/upload-audio";
+import React, { useState, useRef } from "react";
 
-const AudioRecorder = () => {
+const AudioRecorder = ({ agentName,agentId }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioData, setAudioData] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState(null); // To store uploaded audio URL
+  const [displayError, setDisplayError] = useState(null)
 
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const audioRef = useRef(null);
 
+  function setError(){
+    setDisplayError("Something went wrong!")    
+  }
+
+  function resetError(){
+    setDisplayError(null)
+  }
+
   const startRecording = async () => {
     try {
       audioChunksRef.current = []; // Clear previous audio chunks
+      setAudioData(null);
+      setUploadedUrl(null);
+      resetError();
+      
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
@@ -123,16 +138,19 @@ const AudioRecorder = () => {
       };
 
       mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: "audio/wav",
+        });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioData(audioUrl); // Store the audio data (URL) in state
-        console.log("URL IS: ",audioUrl)
+        console.log("URL IS: ", audioUrl);
       };
 
       mediaRecorderRef.current.start();
       setIsRecording(true);
     } catch (err) {
-      console.error('Error accessing microphone:', err);
+        setError();
+      console.error("Error accessing microphone:", err);
     }
   };
 
@@ -168,37 +186,51 @@ const AudioRecorder = () => {
 
   const uploadToCloudinary = async () => {
     if (!audioData) return; // No audio to upload
+    resetError();
 
     setUploading(true);
 
     try {
-
       const audioBlob = await fetch(audioData).then((res) => res.blob());
 
-        const response = await uploadAudio(audioBlob);
-        const result = response.data
-
-      
+      const response = await uploadAudio(audioBlob);
+      const result = response.data;
 
       if (response.success) {
-   
         setUploadedUrl(result.secure_url);
         setUploading(false);
-        console.log('Audio uploaded successfully:', result.secure_url);
+        console.log("Audio uploaded successfully:", result.secure_url);
       } else {
         setUploading(false);
-        console.error('Error uploading to Cloudinary:', result);
+        console.error("Error uploading to Cloudinary:", result);
       }
     } catch (error) {
       setUploading(false);
-      console.error('Error uploading to Cloudinary:', error);
+      setError()
+      console.error("Error uploading to Cloudinary:", error);
     }
   };
 
+  async function updateAgentVoice() {
+    if (!uploadedUrl) {
+      console.log("No URL found!");
+      setError()
+      return;
+    }
+
+    try {
+        resetError()
+      const res = await updateAgent(uploadedUrl, agentName, agentId);
+    } catch (error) {
+      setError()
+      console.error("Error while updating agent's voice: ", error);
+    }
+  }
+
   return (
     <div>
-      <button onClick={toggleRecording}>
-        {isRecording ? 'Stop Recording' : 'Start Recording'}
+      <button className="border-2 border-black" disabled={uploading} onClick={toggleRecording}>
+        {isRecording ? "Stop Recording" : "Start Recording"}
       </button>
 
       {audioData && (
@@ -210,18 +242,14 @@ const AudioRecorder = () => {
           </audio>
 
           <div>
-            {!isPlaying && (
-              <button onClick={playAudio}>Play</button>
-            )}
-            {isPlaying && (
-              <button onClick={stopAudio}>Stop</button>
-            )}
+            {!isPlaying && <button className="border-2 border-black" onClick={playAudio}>Play</button>}
+            {isPlaying && <button className="border-2 border-black" onClick={stopAudio}>Stop</button>}
           </div>
         </div>
       )}
 
       {audioData && !uploading && !uploadedUrl && (
-        <button onClick={uploadToCloudinary}>Upload to Cloudinary</button>
+        <button className="border-2 border-black" onClick={uploadToCloudinary}>Upload to Cloudinary</button>
       )}
 
       {uploading && <p>Uploading...</p>}
@@ -233,9 +261,40 @@ const AudioRecorder = () => {
             <source src={uploadedUrl} type="audio/wav" />
             Your browser does not support the audio element.
           </audio>
-          <p>Audio uploaded successfully! <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">View it here</a>.</p>
+          <p>
+            Audio uploaded successfully!{" "}
+            <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">
+              View it here
+            </a>
+            .
+          </p>
+          <p>
+            Not satisfied with the uploaded preview? Press "Start Recording"
+            again.{" "}
+          </p>
         </div>
       )}
+      <p>
+        Random Text to read for training agent: 
+      </p>
+      <p className="text-cyan-600 drop-shadow-sm text-2xl">
+      The wolves stopped in their tracks, sizing up the mother and her cubs. It had been over a week since their last meal and they were getting desperate. 
+      The cubs would make a good meal, but there were high risks taking on the mother Grizzly. A decision had to be made and the wrong choice could signal the end of the pack.
+      <br />
+      She looked at her little girl who was about to become a teen. She tried to think back to when the girl had been younger but failed to pinpoint the exact moment when she had become a little too big to pick up and carry. It hit her all at once.
+      </p>
+      <button
+        onClick={updateAgentVoice}
+        disabled={uploading || !uploadedUrl || isRecording || !audioData}
+        className={` disabled:bg-red-300 disabled:text-gray-400 px-2 py-1 border-red-500 bg-blue-400 text-blue-600 `}
+      >
+        Upload Voice to Agent
+      </button>
+
+      {displayError &&
+      <p className="text-red-600 text-2xl">{displayError}</p>
+      }
+
     </div>
   );
 };
