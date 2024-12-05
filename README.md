@@ -1,3 +1,19 @@
+contents of the .env file:
+```
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME= value
+NEXT_PUBLIC_CLOUDINARY_API_KEY= value
+CLOUDINARY_CLOUD_NAME= value
+CLOUDINARY_API_KEY= value
+CLOUDINARY_API_SECRET= value
+CLOUDINARY_URL=cloudinary://574597287465649: value
+CLOUDINARY_UNSIGNED_PRESET= value
+
+PLAY_AI_USER_ID= value
+PLAY_AI_SECRET_KEY=value
+```
+
+**Note:** Same value for NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and CLOUDINARY_CLOUD_NAME, NEXT_PUBLIC_CLOUDINARY_API_KEY and CLOUDINARY_API_KEY
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
