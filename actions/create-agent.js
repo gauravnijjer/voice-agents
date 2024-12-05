@@ -13,10 +13,10 @@ export async function createAgent(audio) {
         "X-USER-ID": `${process.env.PLAY_AI_USER_ID}`,
       },
       body: JSON.stringify({
-        // voice: audio,
-        voice: "s3://voice-cloning-zero-shot/e2395fc0-c990-45b6-b95b-d65e9714f0de/test-1/manifest.json",
+        voice: audio,
+        // voice: "s3://voice-cloning-zero-shot/e2395fc0-c990-45b6-b95b-d65e9714f0de/test-1/manifest.json",
         voiceSpeed: 1.2,
-        displayName: "Test 5",
+        displayName: "Agent 4",
         description: "An agent to have a casual chat",
         greeting: "Hello! what's up?",
         prompt: "You are an agent who likes to talk to people and know more about them. Anyone can come to you to talk about anything.",

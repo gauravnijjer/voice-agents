@@ -17,9 +17,9 @@ export default function TestComponent() {
 
   async function genClient() {
     try {
-      // console.log("URL is: ", resource.url);
-      // const res = await createAgent(resource.secure_url);
-      const res = await createAgent();
+      console.log("URL is: ", resource.url);
+      const res = await createAgent(resource.secure_url);
+      // const res = await createAgent();
       console.log("SUCCESS: ", res);
     } catch (error) {
       console.error("Something went wrong: ", error);
@@ -62,7 +62,7 @@ export default function TestComponent() {
         )}
       </div>
 
-      <button onClick={genClient}>Generate a Client</button>
+      {/* <button onClick={genClient}>Generate a Client</button> */}
 
       <div>
         <Agent />

@@ -3,45 +3,28 @@
 import { useEffect, useState } from "react";
 import { open as openEmbed } from "@play-ai/web-embed";
 
-const webEmbedId = ""; // web embed id
+// const webEmbedId = ""; // web embed id
 
-export default function Agent() {
-  const [text, setText] = useState("Change this text");
+export default function Agent({ webEmbedId }) {
+  console.log("embed id: ",webEmbedId)
+  if (!webEmbedId) {
+    return <p>No Embed Id Provided </p>;
+  }
 
-  const events = [
-    {
-      name: "change-text",
-      when: "The user says what they want to change the text on the screen to",
-      data: {
-        text: { type: "string", description: "The text to change to" },
-      },
-    },
-  ] 
-
-  const onEvent = (event) => {
-    console.log("onEvent: ", event);
-    if (event.name === "change-text") {
-      setText(event.data.text);
-    }
-  };
-
-  async function run (){
-    const res =  openEmbed(webEmbedId);
-    console.log(res)
-
+  async function run() {
+    const res = openEmbed(webEmbedId);
+    console.log(res);
   }
 
   useEffect(() => {
     // const { setMinimized } = openEmbed(webEmbedId);
     // setMinimized(false)
-    run()
+    run();
   }, []);
 
   return (
     <>
-      <div className="flex justify-center items-center h-[70vh]">
-        <div className="font-medium text-2xl">{text}</div>
-      </div>
+      <div> Embedded agent: ${webEmbedId} </div>
     </>
   );
 }
