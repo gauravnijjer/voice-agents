@@ -1,43 +1,10 @@
-"use client"
+import TestComponent from "./components/test-component";
 
-import { useState } from "react";
+export default function Page(){
 
-const FileUpload = () => {
-  const [file, setFile] = useState(null);
+  return(
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
+    <TestComponent />
+  )
+}
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      console.log("Something Happened!!")
-      console.log(data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" onChange={handleFileChange} />
-      <button type="submit">Upload</button>
-    </form>
-  );
-};
-
-export default FileUpload;
