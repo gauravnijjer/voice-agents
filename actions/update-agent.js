@@ -39,7 +39,7 @@ export async function updateAgent(blob, agentName, agentId) {
     const result = await response.json();
     console.log(result);
 
-    redirect(`/${agentName}`);
+    permanentRedirect(`/${agentName}`);
   
 }
 

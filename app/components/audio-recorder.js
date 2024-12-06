@@ -103,6 +103,7 @@ import uploadAudio from "@/actions/upload-audio";
 import React, { useState, useRef } from "react";
 
 const AudioRecorder = ({ agentName,agentId }) => {
+  console.log("AGENT ID is: ",agentId)
   const [isRecording, setIsRecording] = useState(false);
   const [audioData, setAudioData] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
