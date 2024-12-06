@@ -4,9 +4,13 @@ import { permanentRedirect } from "next/navigation";
 
 
 
-export async function updateAgent(audioUrl, agentName, agentId) {
+// export async function updateAgent(audioUrl, agentName, agentId) {
+export async function updateAgent(blob, agentName, agentId) {
  
-    const resVoice = await getVoiceClone(audioUrl);
+    // const resVoice = await getVoiceClone(audioUrl);
+    const resVoice = await getVoiceCloneFile(blob);
+    console.log("RESVOICE IS: ", resVoice)
+    
 
     const updatedVoice = resVoice.id;
 
@@ -71,3 +75,30 @@ async function getVoiceClone(voiceUrl) {
     throw error;
   }
 }
+
+async function getVoiceCloneFile(blob) {
+    const form = new FormData();
+    form.append('sample_file', blob, "test-upload");
+    form.append('voice_name', 'upload-test');
+  
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        AUTHORIZATION: 'd0794af339b34eb1818e19c9537089a9',
+        'X-USER-ID': '8yHCnbQ234ge0HriuCUujjvqNwE3',
+      },
+      body: form,
+    };
+  
+    try {
+      const response = await fetch('https://api.play.ht/api/v2/cloned-voices/instant', options);
+      const data = await response.json();
+      console.log("PLAYHT DATA: ",data);
+      return data;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  }
+  

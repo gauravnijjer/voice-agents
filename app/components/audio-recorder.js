@@ -109,6 +109,7 @@ const AudioRecorder = ({ agentName,agentId }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState(null); // To store uploaded audio URL
   const [displayError, setDisplayError] = useState(null)
+  const [uploadingAgent, setUploadingAgent] = useState(false);
 
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -212,17 +213,22 @@ const AudioRecorder = ({ agentName,agentId }) => {
   };
 
   async function updateAgentVoice() {
-    if (!uploadedUrl) {
-      console.log("No URL found!");
-      setError()
-      return;
-    }
+    // if (!uploadedUrl) {
+    //   console.log("No URL found!");
+    //   setError()
+    //   return;
+    // }
 
     try {
         resetError()
-      const res = await updateAgent(uploadedUrl, agentName, agentId);
+        setUploadingAgent(true)
+    //   const res = await updateAgent(uploadedUrl, agentName, agentId);
+    const audioBlob = await fetch(audioData).then((res) => res.blob());
+      const res = await updateAgent(audioBlob, agentName, agentId);
+      setUploadingAgent(false)
     } catch (error) {
       setError()
+      setUploadingAgent(false)
       console.error("Error while updating agent's voice: ", error);
     }
   }
@@ -248,7 +254,7 @@ const AudioRecorder = ({ agentName,agentId }) => {
         </div>
       )}
 
-      {audioData && !uploading && !uploadedUrl && (
+      {/* {audioData && !uploading && !uploadedUrl && (
         <button className="border-2 border-black" onClick={uploadToCloudinary}>Upload to Cloudinary</button>
       )}
 
@@ -273,7 +279,7 @@ const AudioRecorder = ({ agentName,agentId }) => {
             again.{" "}
           </p>
         </div>
-      )}
+      )} */}
       <p>
         Random Text to read for training agent: 
       </p>
@@ -285,11 +291,14 @@ const AudioRecorder = ({ agentName,agentId }) => {
       </p>
       <button
         onClick={updateAgentVoice}
-        disabled={uploading || !uploadedUrl || isRecording || !audioData}
+        // disabled={uploading || !uploadedUrl || isRecording || !audioData}
+        disabled={isRecording || !audioData || uploadingAgent}
         className={` disabled:bg-red-300 disabled:text-gray-400 px-2 py-1 border-red-500 bg-blue-400 text-blue-600 `}
       >
         Upload Voice to Agent
       </button>
+
+      {uploadingAgent && <p className="text-green-600 text-lg">uploading Voice to Agent......</p>}
 
       {displayError &&
       <p className="text-red-600 text-2xl">{displayError}</p>
