@@ -87,8 +87,8 @@ async function getVoiceCloneFile(blob) {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        AUTHORIZATION: 'd0794af339b34eb1818e19c9537089a9',
-        'X-USER-ID': '8yHCnbQ234ge0HriuCUujjvqNwE3',
+        AUTHORIZATION: process.env.PLAY_HT_SECRET_KEY,
+        'X-USER-ID': process.env.PLAY_HT_USER_ID,
       },
       body: form,
     };
