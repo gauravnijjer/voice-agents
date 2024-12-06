@@ -101,6 +101,7 @@
 import { updateAgent } from "@/actions/update-agent";
 import uploadAudio from "@/actions/upload-audio";
 import React, { useState, useRef } from "react";
+import { useRouter } from 'next/navigation'
 
 const AudioRecorder = ({ agentName,agentId }) => {
   console.log("AGENT ID is: ",agentId)
@@ -115,6 +116,8 @@ const AudioRecorder = ({ agentName,agentId }) => {
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const audioRef = useRef(null);
+
+  const router = useRouter();
 
   function setError(){
     setDisplayError("Something went wrong!")    
@@ -226,7 +229,11 @@ const AudioRecorder = ({ agentName,agentId }) => {
     //   const res = await updateAgent(uploadedUrl, agentName, agentId);
     const audioBlob = await fetch(audioData).then((res) => res.blob());
       const res = await updateAgent(audioBlob, agentName, agentId);
-      setUploadingAgent(false)
+      if(res.success){
+        
+        setUploadingAgent(false)
+        router.push(`/${agentName}`)
+      }
     } catch (error) {
       setError()
       setUploadingAgent(false)
