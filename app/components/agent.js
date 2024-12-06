@@ -7,20 +7,24 @@ import { open as openEmbed } from "@play-ai/web-embed";
 
 export default function Agent({ webEmbedId }) {
   console.log("embed id: ",webEmbedId)
-  if (!webEmbedId) {
-    return <p>No Embed Id Provided </p>;
-  }
+  // if (!webEmbedId) {
+  //   return <p>No Embed Id Provided </p>;
+  // }
 
-  async function run() {
-    const res = openEmbed(webEmbedId);
-    console.log(res);
-  }
+
 
   useEffect(() => {
     // const { setMinimized } = openEmbed(webEmbedId);
     // setMinimized(false)
+    async function run() {
+      if (!webEmbedId) {
+        return <p>No Embed Id Provided </p>;
+      }
+      const res = openEmbed(webEmbedId);
+      console.log(res);
+    }
     run();
-  }, []);
+  }, [webEmbedId]);
 
   return (
     <>
