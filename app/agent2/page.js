@@ -6,7 +6,7 @@ export default function page() {
   console.log(process.env.AGENT_EMBED_ID2)
   return (
     <div>
-      Agent2
+      <h1>Click on the microphone button below to begin the conversation.</h1>
       <Agent webEmbedId={process.env.AGENT_EMBED_ID2} />
     </div>
   )
