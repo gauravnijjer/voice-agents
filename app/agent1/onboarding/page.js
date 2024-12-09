@@ -4,7 +4,7 @@ export default function page() {
   console.log(process.env.AGENT_ID1)
   return (
     <div>
-      Agent1 Onboarding
+      <h1>Welcome</h1>
       <AudioRecorder agentName={"agent1"} agentId={process.env.AGENT_ID1} />
     </div>
   )

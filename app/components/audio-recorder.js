@@ -243,6 +243,15 @@ const AudioRecorder = ({ agentName,agentId }) => {
 
   return (
     <div>
+      <h2>
+        Wear your your headphones, press the button to share your voice and then read aloud the following text and fill in the blanks.
+      </h2>
+      <br />
+      <p>
+      Hello, my name is _________. When I woke up this morning, the first sound I heard was _______. Later as I was on my way to this place, I heard ________. I love the sound of _____ and I can’t stand the sound of ______. If I were to imagine my life as a song, the main instrument would be the sound of ________, carrying a sense of ________. And if I could hear just one sound forever, it would probably be ________, because ________
+      </p>
+      <br />
+      <br />
       <button className="border-2 border-black" disabled={uploading} onClick={toggleRecording}>
         {isRecording ? "Stop Recording" : "Start Recording"}
       </button>
@@ -288,25 +297,19 @@ const AudioRecorder = ({ agentName,agentId }) => {
           </p>
         </div>
       )} */}
-      <p>
-        Random Text to read for training agent: 
-      </p>
-      <p className="text-cyan-600 drop-shadow-sm text-2xl">
-      The wolves stopped in their tracks, sizing up the mother and her cubs. It had been over a week since their last meal and they were getting desperate. 
-      The cubs would make a good meal, but there were high risks taking on the mother Grizzly. A decision had to be made and the wrong choice could signal the end of the pack.
+      
       <br />
-      She looked at her little girl who was about to become a teen. She tried to think back to when the girl had been younger but failed to pinpoint the exact moment when she had become a little too big to pick up and carry. It hit her all at once.
-      </p>
+      <br />
       <button
         onClick={updateAgentVoice}
         // disabled={uploading || !uploadedUrl || isRecording || !audioData}
         disabled={isRecording || !audioData || uploadingAgent}
-        className={` disabled:bg-red-300 disabled:text-gray-400 px-2 py-1 border-red-500 bg-blue-400 text-blue-600 `}
+        // className={` disabled:bg-red-300 disabled:text-gray-400 px-2 py-1 border-red-500 bg-blue-400 text-blue-600 `}
       >
-        Upload Voice to Agent
+        Share Your Voice
       </button>
 
-      {uploadingAgent && <p className="text-green-600 text-lg">uploading Voice to Agent......</p>}
+      {uploadingAgent && <p className="text-green-600 text-lg">Sharing your voice...</p>}
 
       {displayError &&
       <p className="text-red-600 text-2xl">{displayError}</p>
