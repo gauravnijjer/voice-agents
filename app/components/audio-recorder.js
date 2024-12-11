@@ -243,11 +243,11 @@ const AudioRecorder = ({ agentName,agentId }) => {
 
   return (
     <div>
-      <h2>Wear your headphones and click on the "Start Recording" button. Then read out the following text and complete the sentences with precious, ordinary or fictional truths about yourself.</h2>
+      <h2>Wear your headphones and click on the Start Recording button. Then read out the following text and complete the sentences with precious, ordinary or fictional truths about yourself.</h2>
       <br />
       <p>
       Hello, my name is _________. When I woke up this morning, the first sound I heard was _______. Later as I was on my way to this place, I heard ________. I love the sound of _____ and I cannot stand the sound of ______. If I were to imagine my life as a song, the main instrument would be the sound of ________, carrying a sense of ________. And if I could hear just one sound forever, it would probably be ________, because ________
-      </p> <br /><h2>Once you finish reading, click on the "Stop Recording Button" </h2>
+      </p> <br /><h2>Once you finish reading, click on the Stop Recording button. </h2>
 
       <br />
       <br />
