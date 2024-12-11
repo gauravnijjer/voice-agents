@@ -243,31 +243,32 @@ const AudioRecorder = ({ agentName,agentId }) => {
 
   return (
     <div>
-      <h2>
-        Wear your your headphones, press the button to share your voice and then read aloud the following text and fill in the blanks.
-      </h2>
+      <h2>Wear your headphones and click on the 'Start Recording' button. Then read out the following text and complete the sentences with precious, ordinary or fictional truths about yourself.    </h2>
       <br />
       <p>
       Hello, my name is _________. When I woke up this morning, the first sound I heard was _______. Later as I was on my way to this place, I heard ________. I love the sound of _____ and I can’t stand the sound of ______. If I were to imagine my life as a song, the main instrument would be the sound of ________, carrying a sense of ________. And if I could hear just one sound forever, it would probably be ________, because ________
-      </p>
+      </p> <br /><h2>Once you finish reading, click on the 'Stop Recording Button' </h2>
+
       <br />
       <br />
       <button className="border-2 border-black" disabled={uploading} onClick={toggleRecording}>
-        {isRecording ? "Stop Recording" : "Start Recording"}
+        {isRecording ? "Stop Recording Voice" : "Start Recording Voice"}
       </button>
 
       {audioData && (
         <div>
-          <h3>Recorded Audio:</h3>
+          <h4>Recorded Audio:</h4>
           <audio ref={audioRef} controls>
             <source src={audioData} type="audio/wav" />
             Your browser does not support the audio element.
           </audio>
 
           <div>
-            {!isPlaying && <button className="border-2 border-black" onClick={playAudio}>Play</button>}
-            {isPlaying && <button className="border-2 border-black" onClick={stopAudio}>Stop</button>}
+            {/* {!isPlaying && <button className="border-2 border-black" onClick={playAudio}>Play</button>}
+            {isPlaying && <button className="border-2 border-black" onClick={stopAudio}>Stop</button>} */}
           </div>
+          <br />
+          <h3>Now click on the button below to continue ahead </h3>
         </div>
       )}
 
@@ -306,7 +307,7 @@ const AudioRecorder = ({ agentName,agentId }) => {
         disabled={isRecording || !audioData || uploadingAgent}
         // className={` disabled:bg-red-300 disabled:text-gray-400 px-2 py-1 border-red-500 bg-blue-400 text-blue-600 `}
       >
-        Share Your Voice
+        Continue Ahead
       </button>
 
       {uploadingAgent && <p className="text-green-600 text-lg">Sharing your voice...</p>}
